@@ -38,8 +38,8 @@ I also added:
 
 ### Links
 
-- Solution URL: TODO
-- Live Site URL: TODO
+- Solution URL: [Frontend Mentor solution](https://www.frontendmentor.io/solutions/vanilla-js---data-driven-bar-chart-with-css-variables-xJ0V-dcAsT)
+- Live Site URL: [expenses-chart-component-six-phi.vercel.app](https://expenses-chart-component-six-phi.vercel.app/)
 
 ## My process
 
