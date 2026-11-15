@@ -1,0 +1,173 @@
+/* ---------- Tokens ---------- */
+:root {
+  --red-500: hsl(10, 79%, 65%);
+  --blue-300: hsl(186, 34%, 65%);
+  --brown-950: hsl(25, 47%, 15%);
+  --brown-400: hsl(28, 10%, 53%);
+  --red-100: hsl(26, 66%, 93%);
+  --cream: hsl(33, 100%, 98%); /* card background */
+  --red-300: hsl(10, 100%, 76%); /* hover */
+  --blue-200: hsl(186, 49%, 80%); /* hover on today */
+  --radius: 1.25rem;
+}
+
+/* ---------- Reset ---------- */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+* { margin: 0; }
+ol { padding: 0; list-style: none; }
+img { display: block; max-width: 100%; }
+[hidden] { display: none !important; }
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+body {
+  display: grid;
+  place-content: center;
+  min-height: 100vh;
+  padding: 1rem;
+  font-family: "DM Sans", sans-serif;
+  font-size: 1.125rem;
+  color: var(--brown-950);
+  background: var(--red-100);
+}
+
+.wrapper { display: grid; gap: 1rem; width: min(100%, 33.75rem); }
+
+/* ---------- Balance card ---------- */
+.balance {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem;
+  border-radius: 0.625rem;
+  color: var(--cream);
+  background: var(--red-500);
+}
+.balance__label { font-size: 0.9375rem; }
+.balance__amount { margin-top: 0.25rem; font-size: 1.5rem; font-weight: 700; }
+.balance__logo { width: 3.75rem; height: auto; }
+
+/* ---------- Spending card ---------- */
+.spending {
+  padding: 1.5rem 1.25rem;
+  border-radius: 0.625rem;
+  background: var(--cream);
+}
+.spending__title { margin-bottom: 3.25rem; font-size: 1.5rem; }
+
+/* ---------- Chart ---------- */
+/*
+  Bar markup (rendered by JS), one per day:
+  li.chart__item (+ .is-today) style="--h: 63%"
+    > span.chart__bar
+        > span.chart__tooltip   "$52.36"
+    > span.chart__day           "wed"
+
+  --h = this day's amount / the biggest amount × 100%
+*/
+.chart {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.75rem;
+  height: 10rem;
+}
+
+.chart__item {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  gap: 0.5rem;
+  text-align: center;
+  outline: none;
+}
+
+/* The bar sits at the bottom of the top row and takes --h of its height */
+.chart__bar {
+  position: relative;
+  align-self: end;
+  height: var(--h, 0%);
+  border-radius: 0.25rem;
+  background: var(--red-500);
+  cursor: pointer;
+}
+.chart__item.is-today .chart__bar { background: var(--blue-300); }
+
+.chart__day { font-size: 0.8125rem; color: var(--brown-400); }
+
+/* Tooltip floats just above the bar it belongs to */
+.chart__tooltip {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 0.5rem);
+  translate: -50% 0;
+  padding: 0.5rem;
+  border-radius: 0.3125rem;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  white-space: nowrap;
+  color: var(--cream);
+  background: var(--brown-950);
+  opacity: 0; /* hidden visually, still read by screen readers */
+  pointer-events: none;
+  transition: opacity 0.15s;
+}
+
+/* Hover / keyboard focus: lighter bar + show the amount */
+.chart__item:hover .chart__bar,
+.chart__item:focus-visible .chart__bar { background: var(--red-300); }
+.chart__item.is-today:hover .chart__bar,
+.chart__item.is-today:focus-visible .chart__bar { background: var(--blue-200); }
+.chart__item:hover .chart__tooltip,
+.chart__item:focus-visible .chart__tooltip { opacity: 1; }
+.chart__item:focus-visible .chart__bar { outline: 2px solid var(--brown-950); outline-offset: 2px; }
+
+.chart__error { margin-top: 1rem; font-size: 0.9375rem; color: var(--brown-400); }
+
+/* ---------- Summary ---------- */
+.summary {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 2px solid var(--red-100);
+}
+.summary__label { font-size: 0.9375rem; color: var(--brown-400); }
+.summary__total { font-size: 1.875rem; font-weight: 700; line-height: 1.2; }
+.summary__change { text-align: right; }
+.summary__percent { font-size: 0.9375rem; font-weight: 700; }
+
+/* ---------- Footer ---------- */
+.attribution { margin-top: 1.5rem; font-size: 0.6875rem; text-align: center; }
+.attribution a { color: var(--brown-950); }
+
+/* ---------- Desktop ---------- */
+@media (min-width: 40em) {
+  .wrapper { gap: 1.5rem; }
+  .balance { padding: 1.5rem 2.5rem 1.5rem 2rem; border-radius: var(--radius); }
+  .balance__label { font-size: 1.125rem; }
+  .balance__amount { font-size: 2rem; }
+  .balance__logo { width: auto; }
+
+  .spending { padding: 2rem 2.5rem 3rem; border-radius: var(--radius); }
+  .spending__title { margin-bottom: 4rem; font-size: 2rem; }
+
+  .chart { gap: 1.125rem; height: 11.25rem; }
+  .chart__bar { border-radius: 0.3125rem; }
+  .chart__day { font-size: 0.9375rem; }
+  .chart__tooltip { font-size: 1.125rem; }
+
+  .summary { margin-top: 2rem; padding-top: 2rem; }
+  .summary__label { font-size: 1.125rem; }
+  .summary__total { font-size: 3rem; }
+  .summary__percent { font-size: 1.125rem; }
+}
